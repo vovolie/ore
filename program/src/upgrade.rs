@@ -2,9 +2,12 @@ use ore_api::{consts::*, error::OreError, instruction::StakeArgs, loaders::*};
 use ore_utils::spl::mint_to_signed;
 use solana_program::{
     account_info::AccountInfo, entrypoint::ProgramResult, program_error::ProgramError,
-    program_pack::Pack,
+    program_pack::Pack, pubkey, pubkey::Pubkey,
 };
 use spl_token::state::Mint;
+
+// TODO Activate upgrades.
+const PRELAUNCH_UPGRADE_AUTHORITY: Pubkey = pubkey!("F9gWPbWiMVcT5ftGy4X2fLE4gSDw6kiATgZU8tnCmso6");
 
 /// Upgrade allows a user to migrate a v1 token to a v2 token at a 1:1 exchange rate.
 pub fn process_upgrade<'a, 'info>(
@@ -27,6 +30,11 @@ pub fn process_upgrade<'a, 'info>(
     load_mint(mint_v1_info, MINT_V1_ADDRESS, true)?;
     load_token_account(sender_info, Some(signer.key), &MINT_V1_ADDRESS, true)?;
     load_program(token_program, spl_token::id())?;
+
+    // TODO Activate upgrades.
+    if signer.key.ne(&PRELAUNCH_UPGRADE_AUTHORITY) {
+        return Err(OreError::NotEnabled.into());
+    }
 
     // Burn v1 tokens
     solana_program::program::invoke(
