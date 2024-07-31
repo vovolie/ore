@@ -153,3 +153,7 @@ pub const TREASURY_TOKENS_ADDRESS: Pubkey = Pubkey::new_from_array(
 
 /// The address of the CU-optimized Solana noop program.
 pub const NOOP_PROGRAM_ID: Pubkey = pubkey!("noop8ytexvkpCuqbf6FB89BSuNemHtPRqaNC31GWivW");
+
+// TODO Activate upgrades.
+pub const PRELAUNCH_UPGRADE_AUTHORITY: Pubkey =
+    pubkey!("F9gWPbWiMVcT5ftGy4X2fLE4gSDw6kiATgZU8tnCmso6");
