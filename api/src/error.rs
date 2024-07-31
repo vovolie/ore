@@ -21,6 +21,8 @@ pub enum OreError {
     MaxSupply = 6,
     #[error("The proof does not match the expected account")]
     AuthFailed = 7,
+    #[error("This instruction is currently not enabled")]
+    NotEnabled = 8,
 }
 
 impl From<OreError> for ProgramError {

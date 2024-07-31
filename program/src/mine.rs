@@ -28,6 +28,9 @@ use crate::utils::AccountDeserialize;
 
 /// Mine validates hashes and increments a miner's collectable balance.
 pub fn process_mine<'a, 'info>(accounts: &'a [AccountInfo<'info>], data: &[u8]) -> ProgramResult {
+    // TODO Activate mining.
+    return Err(OreError::NotEnabled.into());
+
     // Parse args.
     let args = MineArgs::try_from_bytes(data)?;
 

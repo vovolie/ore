@@ -14,6 +14,9 @@ use crate::utils::AccountDeserialize;
 
 /// Reset tops up the busses, updates the base reward rate, and sets up the ORE program for the next epoch.
 pub fn process_reset<'a, 'info>(accounts: &'a [AccountInfo<'info>], _data: &[u8]) -> ProgramResult {
+    // TODO Activate mining.
+    return Err(OreError::NotEnabled.into());
+
     // Load accounts.
     let [signer, bus_0_info, bus_1_info, bus_2_info, bus_3_info, bus_4_info, bus_5_info, bus_6_info, bus_7_info, config_info, mint_info, treasury_info, treasury_tokens_info, token_program] =
         accounts
