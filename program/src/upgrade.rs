@@ -28,11 +28,6 @@ pub fn process_upgrade<'a, 'info>(
     load_token_account(sender_info, Some(signer.key), &MINT_V1_ADDRESS, true)?;
     load_program(token_program, spl_token::id())?;
 
-    // TODO Activate upgrades.
-    if signer.key.ne(&PRELAUNCH_UPGRADE_AUTHORITY) {
-        return Err(OreError::NotEnabled.into());
-    }
-
     // Burn v1 tokens
     solana_program::program::invoke(
         &spl_token::instruction::burn(

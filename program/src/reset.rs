@@ -14,8 +14,11 @@ use crate::utils::AccountDeserialize;
 
 /// Reset tops up the bus balances, updates the base reward rate, and sets up the ORE program for the next epoch.
 pub fn process_reset<'a, 'info>(accounts: &'a [AccountInfo<'info>], _data: &[u8]) -> ProgramResult {
-    // TODO Activate mining.
-    return Err(OreError::NotEnabled.into());
+    // Activate mining.
+    let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
+    if clock.unix_timestamp.lt(&START_AT) {
+        return Err(OreError::NotEnabled.into());
+    }
 
     // Load accounts.
     let [signer, bus_0_info, bus_1_info, bus_2_info, bus_3_info, bus_4_info, bus_5_info, bus_6_info, bus_7_info, config_info, mint_info, treasury_info, treasury_tokens_info, token_program] =
@@ -45,7 +48,7 @@ pub fn process_reset<'a, 'info>(accounts: &'a [AccountInfo<'info>], _data: &[u8]
     // Validate enough time has passed since the last reset.
     let mut config_data = config_info.data.borrow_mut();
     let config = Config::try_from_bytes_mut(&mut config_data)?;
-    let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
+    // let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
     if config
         .last_reset_at
         .saturating_add(EPOCH_DURATION)
