@@ -153,6 +153,3 @@ pub const TREASURY_TOKENS_ADDRESS: Pubkey = Pubkey::new_from_array(
 
 /// The address of the CU-optimized Solana noop program.
 pub const NOOP_PROGRAM_ID: Pubkey = pubkey!("noop8ytexvkpCuqbf6FB89BSuNemHtPRqaNC31GWivW");
-
-// Start at timestamp (August 6th, 2024 00:00 UTC)
-pub const START_AT: i64 = 1722902400;

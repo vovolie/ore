@@ -28,12 +28,6 @@ use crate::utils::AccountDeserialize;
 
 /// Mine validates hashes and increments a miner's collectable balance.
 pub fn process_mine<'a, 'info>(accounts: &'a [AccountInfo<'info>], data: &[u8]) -> ProgramResult {
-    // Activate mining.
-    let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
-    if clock.unix_timestamp.lt(&START_AT) {
-        return Err(OreError::NotEnabled.into());
-    }
-
     // Parse args.
     let args = MineArgs::try_from_bytes(data)?;
 
@@ -59,7 +53,7 @@ pub fn process_mine<'a, 'info>(accounts: &'a [AccountInfo<'info>], data: &[u8]) 
     // Validate epoch is active.
     let config_data = config_info.data.borrow();
     let config = Config::try_from_bytes(&config_data)?;
-    // let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
+    let clock = Clock::get().or(Err(ProgramError::InvalidAccountData))?;
     if config
         .last_reset_at
         .saturating_add(EPOCH_DURATION)
